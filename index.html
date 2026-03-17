@@ -63,7 +63,7 @@
                         id="usernameInput" 
                         placeholder="Search username..." 
                         class="w-full pl-11 pr-4 py-2 rounded-full bg-[#0d1117] border border-[#30363d] focus:outline-none focus:border-blue-500 text-sm transition-all"
-                        onkeypress="if(event.key === 'Enter') updateUrlAndFetch()"
+                        onkeypress="if(event.key === 'Enter') handleSearch()"
                     >
                 </div>
             </div>
@@ -72,10 +72,29 @@
 
     <div class="max-w-6xl mx-auto px-4">
         
-        <!-- Error Alert -->
-        <div id="errorAlert" class="hidden mb-6 p-4 bg-red-900/20 border border-red-500/50 rounded-xl flex items-center gap-3 text-red-400">
-            <i class="fi fi-rr-exclamation"></i>
-            <span>User not found. Please check the spelling and try again.</span>
+        <!-- Error Alerts Container -->
+        <div id="errorContainer" class="hidden mb-6 space-y-3">
+            <!-- Rate Limit Error -->
+            <div id="rateLimitAlert" class="hidden p-4 bg-orange-900/20 border border-orange-500/50 rounded-xl flex flex-col gap-2 text-orange-400">
+                <div class="flex items-center gap-3">
+                    <i class="fi fi-rr-hourglass-end"></i>
+                    <span class="font-bold">API Rate Limit Exceeded</span>
+                </div>
+                <p class="text-xs ml-8">GitHub limits requests for guest users. Please wait a few minutes or try again later.</p>
+                <button onclick="handleSearch()" class="ml-8 mt-2 w-fit px-3 py-1 bg-orange-500/20 hover:bg-orange-500/40 rounded-lg text-[10px] font-bold uppercase transition-all">Try Again</button>
+            </div>
+
+            <!-- Not Found Error -->
+            <div id="notFoundAlert" class="hidden p-4 bg-red-900/20 border border-red-500/50 rounded-xl flex items-center gap-3 text-red-400">
+                <i class="fi fi-rr-exclamation"></i>
+                <span>User not found. Check the username and try again.</span>
+            </div>
+
+            <!-- Generic Network Error -->
+            <div id="genericErrorAlert" class="hidden p-4 bg-gray-800 border border-gray-600 rounded-xl flex items-center gap-3 text-gray-300">
+                <i class="fi fi-rr-wifi-slash"></i>
+                <span>Network error. Please check your connection.</span>
+            </div>
         </div>
 
         <!-- Skeleton Loader -->
@@ -104,21 +123,28 @@
                             <i class="fi fi-rr-at"></i><span id="loginId"></span>
                         </p>
                         <p id="bioText" class="text-gray-400 mb-6 max-w-2xl leading-relaxed"></p>
-                        <div class="flex flex-wrap gap-3 mb-8 justify-center md:justify-start">
-                            <div class="px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-2xl text-center min-w-[100px]">
-                                <span class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest">Followers</span>
+                        
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+                            <div class="px-4 py-3 bg-[#161b22] border border-[#30363d] rounded-2xl">
+                                <span class="block text-[10px] text-gray-500 uppercase font-bold">Followers</span>
                                 <span id="statFollowers" class="text-lg font-bold text-white">0</span>
                             </div>
-                            <div class="px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-2xl text-center min-w-[100px]">
-                                <span class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest">Following</span>
+                            <div class="px-4 py-3 bg-[#161b22] border border-[#30363d] rounded-2xl">
+                                <span class="block text-[10px] text-gray-500 uppercase font-bold">Following</span>
                                 <span id="statFollowing" class="text-lg font-bold text-white">0</span>
                             </div>
-                            <div class="px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-2xl text-center min-w-[100px]">
-                                <span class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest">Total Stars</span>
-                                <span id="statStars" class="text-lg font-bold text-white">0</span>
+                            <div class="px-4 py-3 bg-[#161b22] border border-[#30363d] rounded-2xl">
+                                <span class="block text-[10px] text-gray-500 uppercase font-bold">Repos</span>
+                                <span id="statRepos" class="text-lg font-bold text-white">0</span>
+                            </div>
+                            <div class="px-4 py-3 bg-[#161b22] border border-[#30363d] rounded-2xl">
+                                <span class="block text-[10px] text-gray-500 uppercase font-bold">Gists</span>
+                                <span id="statGists" class="text-lg font-bold text-white">0</span>
                             </div>
                         </div>
+
                         <div class="flex flex-wrap gap-5 text-sm text-gray-400 justify-center md:justify-start border-t border-[#30363d] pt-6">
+                            <span class="flex items-center gap-2"><i class="fi fi-rr-calendar"></i> Joined <span id="valJoined"></span></span>
                             <span id="locBox" class="flex items-center gap-2"><i class="fi fi-rr-marker"></i> <span id="valLocation"></span></span>
                             <span id="linkBox" class="flex items-center gap-2"><i class="fi fi-rr-link"></i> <a id="valBlog" target="_blank" class="hover:text-blue-400"></a></span>
                             <span id="compBox" class="flex items-center gap-2"><i class="fi fi-rr-briefcase"></i> <span id="valCompany"></span></span>
@@ -129,7 +155,7 @@
 
             <div class="flex gap-8 border-b border-[#30363d] px-2 overflow-x-auto">
                 <button onclick="switchTab('repos')" id="tab-repos" class="tab-btn active py-4 font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i class="fi fi-rr-folder"></i> Repositories <span id="badgeRepos" class="bg-[#30363d] text-[10px] px-2 py-0.5 rounded-full">0</span>
+                    <i class="fi fi-rr-folder"></i> Repositories
                 </button>
                 <button onclick="switchTab('stars')" id="tab-stars" class="tab-btn py-4 font-semibold flex items-center gap-2 whitespace-nowrap">
                     <i class="fi fi-rr-star"></i> Starred
@@ -144,50 +170,77 @@
     <script>
         const loadingUI = document.getElementById('loadingUI');
         const content = document.getElementById('profileContent');
-        const errorAlert = document.getElementById('errorAlert');
+        const errorContainer = document.getElementById('errorContainer');
+        const rateLimitAlert = document.getElementById('rateLimitAlert');
+        const notFoundAlert = document.getElementById('notFoundAlert');
+        const genericErrorAlert = document.getElementById('genericErrorAlert');
+
+        const headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2026-03-10"
+        };
 
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
             const username = params.get('usn') || params.get('username') || params.get('info');
+            
             if (username) {
+                // Remove parameter immediately
+                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.replaceState({ path: newUrl }, '', newUrl);
+                
                 document.getElementById('usernameInput').value = username;
                 fetchProfile(username);
             }
         };
 
-        function updateUrlAndFetch() {
+        function hideAllErrors() {
+            errorContainer.classList.add('hidden');
+            rateLimitAlert.classList.add('hidden');
+            notFoundAlert.classList.add('hidden');
+            genericErrorAlert.classList.add('hidden');
+        }
+
+        function handleSearch() {
             const username = document.getElementById('usernameInput').value.trim();
-            if (!username) return;
-            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usn=' + username;
-            window.history.pushState({ path: newUrl }, '', newUrl);
-            fetchProfile(username);
+            if (username) fetchProfile(username);
         }
 
         async function fetchProfile(username) {
-            errorAlert.classList.add('hidden');
+            hideAllErrors();
             loadingUI.classList.remove('hidden');
             content.classList.add('hidden');
 
             try {
-                const [uRes, rRes, sRes] = await Promise.all([
-                    fetch(`https://api.github.com/users/${username}`),
-                    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`),
-                    fetch(`https://api.github.com/users/${username}/starred?per_page=100`)
-                ]);
-
+                const uRes = await fetch(`https://api.github.com/users/${username}`, { headers });
+                
+                // Detailed Error Handling
                 if (!uRes.ok) {
-                    errorAlert.classList.remove('hidden');
+                    errorContainer.classList.remove('hidden');
+                    if (uRes.status === 404) {
+                        notFoundAlert.classList.remove('hidden');
+                    } else if (uRes.status === 403) {
+                        rateLimitAlert.classList.remove('hidden');
+                    } else {
+                        genericErrorAlert.classList.remove('hidden');
+                    }
                     loadingUI.classList.add('hidden');
                     return;
                 }
 
+                const [rRes, sRes] = await Promise.all([
+                    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`, { headers }),
+                    fetch(`https://api.github.com/users/${username}/starred?per_page=100`, { headers })
+                ]);
+
                 const user = await uRes.json();
-                const repos = await rRes.json();
-                const stars = await sRes.json();
+                const repos = rRes.ok ? await rRes.json() : [];
+                const stars = sRes.ok ? await sRes.json() : [];
 
                 renderDashboard(user, repos, stars);
             } catch (err) {
-                errorAlert.classList.remove('hidden');
+                errorContainer.classList.remove('hidden');
+                genericErrorAlert.classList.remove('hidden');
             } finally {
                 loadingUI.classList.add('hidden');
             }
@@ -197,16 +250,22 @@
             document.getElementById('avatar').src = user.avatar_url;
             document.getElementById('fullName').textContent = user.name || user.login;
             document.getElementById('loginId').textContent = user.login;
-            document.getElementById('bioText').textContent = user.bio || "No description provided.";
+            document.getElementById('bioText').textContent = user.bio || "This user has no bio.";
             document.getElementById('statFollowers').textContent = user.followers.toLocaleString();
             document.getElementById('statFollowing').textContent = user.following.toLocaleString();
-            document.getElementById('statStars').textContent = stars.length;
-            document.getElementById('badgeRepos').textContent = user.public_repos;
+            document.getElementById('statRepos').textContent = user.public_repos.toLocaleString();
+            document.getElementById('statGists').textContent = user.public_gists.toLocaleString();
+
+            const joinedDate = new Date(user.created_at).toLocaleDateString(undefined, { 
+                year: 'numeric', month: 'short', day: 'numeric' 
+            });
+            document.getElementById('valJoined').textContent = joinedDate;
 
             const achBox = document.getElementById('achievementsList');
             achBox.innerHTML = '';
             if (user.public_repos > 50) achBox.innerHTML += createBadge('Powerhouse', 'fi-rr-bolt');
             if (user.followers > 100) achBox.innerHTML += createBadge('Elite', 'fi-rr-star');
+            if (user.site_admin) achBox.innerHTML += createBadge('Staff', 'fi-rr-shield-check');
             
             updateMeta('valLocation', user.location, 'locBox');
             updateMeta('valBlog', user.blog, 'linkBox', true);
@@ -223,14 +282,18 @@
 
         function renderCards(containerId, items) {
             const container = document.getElementById(containerId);
+            if (!items || items.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-10 text-center text-gray-500 italic">No items found</div>`;
+                return;
+            }
             container.innerHTML = items.map(item => `
-                <div class="glass-card p-5 rounded-2xl group flex flex-col justify-between">
+                <div class="glass-card p-5 rounded-2xl group flex flex-col justify-between hover:border-blue-500/50 transition-colors">
                     <div>
                         <div class="flex items-start justify-between mb-2">
                             <a href="${item.html_url}" target="_blank" class="text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors truncate pr-2">${item.name}</a>
                             <span class="text-[8px] border border-[#30363d] px-2 py-0.5 rounded-full uppercase text-gray-500 font-bold">${item.language || 'Code'}</span>
                         </div>
-                        <p class="text-[11px] text-gray-400 line-clamp-2 mb-4 h-8">${item.description || 'No description.'}</p>
+                        <p class="text-[11px] text-gray-400 line-clamp-2 mb-4 h-8">${item.description || 'No description provided.'}</p>
                     </div>
                     <div class="flex gap-4 text-[9px] text-gray-500 font-bold">
                         <span><i class="fi fi-rr-star"></i> ${item.stargazers_count}</span>
@@ -251,7 +314,7 @@
             const el = document.getElementById(id);
             const box = document.getElementById(boxId);
             if (value) {
-                if (isLink) { el.href = value.startsWith('http') ? value : `https://${value}`; el.textContent = value; }
+                if (isLink) { el.href = value.startsWith('http') ? value : `https://${value}`; el.textContent = value.replace('https://',''); }
                 else { el.textContent = value; }
                 box.classList.remove('hidden');
                 box.classList.add('flex');
