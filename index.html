@@ -154,12 +154,12 @@
             </section>
 
             <div class="flex gap-8 border-b border-[#30363d] px-2 overflow-x-auto">
-                <button onclick="switchTab('repos')" id="tab-repos" class="tab-btn active py-4 font-semibold flex items-center gap-2 whitespace-nowrap">
+                <a href="#repos" id="tab-repos" class="tab-btn active py-4 font-semibold flex items-center gap-2 whitespace-nowrap">
                     <i class="fi fi-rr-folder"></i> Repositories
-                </button>
-                <button onclick="switchTab('stars')" id="tab-stars" class="tab-btn py-4 font-semibold flex items-center gap-2 whitespace-nowrap">
+                </a>
+                <a href="#stars" id="tab-stars" class="tab-btn py-4 font-semibold flex items-center gap-2 whitespace-nowrap">
                     <i class="fi fi-rr-star"></i> Starred
-                </button>
+                </a>
             </div>
 
             <div id="reposView" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
@@ -192,7 +192,18 @@
                 document.getElementById('usernameInput').value = username;
                 fetchProfile(username);
             }
+
+            // Initial tab check
+            handleHashChange();
         };
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', handleHashChange);
+
+        function handleHashChange() {
+            const hash = window.location.hash || '#repos';
+            switchTab(hash.substring(1));
+        }
 
         function hideAllErrors() {
             errorContainer.classList.add('hidden');
@@ -214,7 +225,6 @@
             try {
                 const uRes = await fetch(`https://api.github.com/users/${username}`, { headers });
                 
-                // Detailed Error Handling
                 if (!uRes.ok) {
                     errorContainer.classList.remove('hidden');
                     if (uRes.status === 404) {
@@ -274,6 +284,9 @@
             renderCards('reposView', repos);
             renderCards('starsView', stars);
             content.classList.remove('hidden');
+            
+            // Ensure correct tab visibility after render
+            handleHashChange();
         }
 
         function createBadge(text, icon) {
@@ -304,10 +317,14 @@
         }
 
         function switchTab(tab) {
-            document.getElementById('reposView').classList.toggle('hidden', tab !== 'repos');
-            document.getElementById('starsView').classList.toggle('hidden', tab !== 'stars');
-            document.getElementById('tab-repos').classList.toggle('active', tab === 'repos');
-            document.getElementById('tab-stars').classList.toggle('active', tab === 'stars');
+            const isRepos = tab === 'repos';
+            const isStars = tab === 'stars';
+
+            document.getElementById('reposView').classList.toggle('hidden', !isRepos);
+            document.getElementById('starsView').classList.toggle('hidden', !isStars);
+            
+            document.getElementById('tab-repos').classList.toggle('active', isRepos);
+            document.getElementById('tab-stars').classList.toggle('active', isStars);
         }
 
         function updateMeta(id, value, boxId, isLink = false) {
