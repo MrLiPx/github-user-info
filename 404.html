@@ -1,38 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0d1117; color: #c9d1d9; }
-        .glow { filter: drop-shadow(0 0 10px rgba(88, 166, 255, 0.5)); }
-        .float { animation: float 3s ease-in-out infinite; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Page Not Found · GitHub User Lookup</title>
+  <meta name="description" content="This page doesn't exist.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://mrlipx.github.io/github-user-lookup/">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <meta name="theme-color" content="#4d9ef7">
+  <meta name="color-scheme" content="dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .nf {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      gap: 0;
+      animation: fadeUp .4s ease both;
+    }
+    .nf-code {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(7rem, 20vw, 12rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.06em;
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(77,158,247,.25);
+      margin-bottom: 16px;
+      user-select: none;
+    }
+    .nf-code .nf-zero {
+      -webkit-text-stroke: 2px rgba(77,158,247,.7);
+      filter: drop-shadow(0 0 20px rgba(77,158,247,.3));
+    }
+    .nf-icon {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px rgba(77,158,247,.4));
+    }
+    .nf-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -.04em;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .nf-sub {
+      font-size: .92rem;
+      color: var(--sub);
+      max-width: 380px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .nf-sub code {
+      font-family: 'DM Mono', monospace;
+      font-size: .82em;
+      color: var(--accent);
+      background: rgba(77,158,247,.08);
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(77,158,247,.15);
+    }
+    .nf-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
+    .nf-btn-primary {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px; background: var(--accent); color: #fff;
+      border-radius: var(--r-sm); font-size: .875rem; font-weight: 600;
+      text-decoration: none; transition: background .2s, transform .15s;
+    }
+    .nf-btn-primary:hover { background: #3a8de0; transform: translateY(-2px); }
+    .nf-btn-ghost {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px; background: var(--surface); color: var(--sub);
+      border: 1px solid var(--border2); border-radius: var(--r-sm);
+      font-size: .875rem; font-weight: 600; text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .nf-btn-ghost:hover { background: var(--surface2); color: var(--text); transform: translateY(-2px); }
+    .nf-path {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 8px 16px;
+      max-width: 400px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-6">
-    <div class="text-center max-w-md">
-        <div class="relative inline-block mb-10 float">
-            <i class="fi fi-rr-compass text-8xl text-blue-500 glow"></i>
-            <span class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-lg font-bold shadow-lg">404</span>
-        </div>
-        <h1 class="text-4xl font-bold text-white mb-4">Page Not Found</h1>
-        <p class="text-gray-500 mb-8 leading-relaxed">
-            The path you followed seems to have vanished or never existed. You might have typed the URL incorrectly or the page has moved.
-        </p>
-        <div class="flex flex-col items-center gap-4">
-            <a href="/github-user-lookup" class="inline-flex items-center gap-3 px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold transition-all transform hover:scale-105 shadow-xl shadow-blue-900/20">
-                <i class="fi fi-rr-home"></i> Back to Safety
-            </a>
-            <p class="text-[10px] text-gray-600 uppercase tracking-widest mt-4">Standard 404 Error</p>
-        </div>
+<body>
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+  </div>
+
+  <main class="nf" role="main">
+    <div class="nf-code" aria-hidden="true">4<span class="nf-zero">0</span>4</div>
+    <i class="fi fi-rr-search nf-icon" aria-hidden="true"></i>
+    <h1 class="nf-title">Page not found</h1>
+    <p class="nf-sub">The path <code id="nf-path"></code> doesn't exist. It may have moved or never existed.</p>
+    <div class="nf-actions">
+      <a class="nf-btn-primary" href="."><i class="fi fi-rr-home" aria-hidden="true"></i>Go home</a>
     </div>
+    <div class="nf-path" id="nf-full"></div>
+  </main>
+
+  <script>
+    (function() {
+      function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+      var el = document.getElementById('nf-path');
+      var fu = document.getElementById('nf-full');
+      if (el) el.textContent = location.pathname;
+      if (fu) fu.textContent = location.href;
+    })();
+  </script>
 </body>
 </html>

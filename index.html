@@ -1,183 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Insights | Professional Developer Analytics</title>
-    
-    <!-- SEO & SSO Meta Tags -->
-    <meta name="description" content="Discover professional GitHub profile analytics. Explore repositories, contributions, and developer achievements with a premium interface.">
-    <meta name="keywords" content="GitHub, Profile, Analytics, Developer, Repositories, Tech Stack">
-    <meta name="author" content="GitHub Insights Team">
-    <link rel="canonical" href="https://mrlipx.github.io/github-user-lookup/">
-    
-    <!-- Open Graph / Social Media (SSO) -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="GitHub Insights">
-    <meta property="og:title" content="GitHub Developer Insights Dashboard">
-    <meta property="og:description" content="A high-performance dashboard for analyzing GitHub activity and developer profiles.">
-    <meta property="og:image" content="/github-user-lookup/assets/logo.png">
-    <meta property="og:image:width" content="128">
-    <meta property="og:image:height" content="128">
-    
-    <!-- Icons & Fonts -->
-    <link rel="icon" type="image/x-icon" href="https://github.com/favicon.ico">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-brands/css/uicons-brands.css'>
-    
-    <!-- External Assets -->
-    <link rel="stylesheet" href="assets/style.css">
-    <script src="assets/app.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── Primary SEO ── -->
+  <title>GitHub User Lookup — Developer Profile Explorer</title>
+  <meta name="description" content="Search any GitHub user and instantly explore their repositories, stars, followers, and developer stats in a clean, fast interface.">
+  <meta name="keywords" content="GitHub, profile, lookup, developer, repositories, stats, analytics, open source">
+  <meta name="author" content="MrLiPx">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <link rel="canonical" href="https://mrlipx.github.io/github-user-lookup/">
+
+  <!-- ── Open Graph ── -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="GitHub User Lookup">
+  <meta property="og:locale"      content="en_US">
+  <meta property="og:title"       content="GitHub User Lookup — Developer Profile Explorer">
+  <meta property="og:description" content="Search any GitHub user and instantly explore their repositories, stars, followers, and developer stats.">
+  <meta property="og:url"         content="https://mrlipx.github.io/github-user-lookup/">
+  <meta property="og:image"       content="https://mrlipx.github.io/github-user-lookup/assets/logo.png">
+  <meta property="og:image:width"  content="128">
+  <meta property="og:image:height" content="128">
+  <meta property="og:image:alt"    content="GitHub User Lookup logo">
+
+  <!-- ── Twitter / X ── -->
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:site"        content="@MrLiPx">
+  <meta name="twitter:creator"     content="@MrLiPx">
+  <meta name="twitter:title"       content="GitHub User Lookup — Developer Profile Explorer">
+  <meta name="twitter:description" content="Search any GitHub user and instantly explore their repositories, stars, followers, and developer stats.">
+  <meta name="twitter:image"       content="https://mrlipx.github.io/github-user-lookup/assets/logo.png">
+
+  <!-- ── Theme ── -->
+  <meta name="theme-color" content="#4d9ef7">
+  <meta name="color-scheme" content="dark">
+
+  <!-- ── Structured Data ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "GitHub User Lookup",
+    "url": "https://mrlipx.github.io/github-user-lookup/",
+    "description": "Search any GitHub user and explore their repositories, stars, and developer stats.",
+    "author": { "@type": "Person", "name": "MrLiPx", "url": "https://github.com/MrLiPx" },
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web"
+  }
+  </script>
+
+  <!-- ── Favicon ── -->
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon"      href="assets/logo.png">
+
+  <!-- ── Fonts ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- ── Icons ── -->
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-brands/css/uicons-brands.css">
+
+  <link rel="stylesheet" href="assets/style.css">
 </head>
-<body class="min-h-screen">
+<body>
 
-    <!-- Premium Navigation -->
-    <nav class="sticky top-0 z-50 glass-nav py-4 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-4 cursor-pointer hover:opacity-80 transition-opacity" onclick="location.reload()">
-                <div class="brand-icon-wrapper">
-                    <i class="fi fi-brands-github text-white text-2xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold text-white tracking-tight">Insights</h1>
-                    <div class="flex items-center gap-2">
-                        <span class="status-dot"></span>
-                        <span class="text-[9px] text-gray-500 font-black uppercase tracking-widest">Enterprise API v2</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4 w-full md:w-auto">
-                <div class="search-container group">
-                    <i class="fi fi-rr-search search-icon"></i>
-                    <input 
-                        type="text" 
-                        id="usernameInput" 
-                        placeholder="Search developer handle..." 
-                        class="search-input"
-                        autocomplete="off"
-                    >
-                    <div class="search-kbd">
-                        <kbd>⌘</kbd><kbd>K</kbd>
-                    </div>
-                </div>
-            </div>
+  <!-- ══ Background ══ -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+  </div>
+
+  <!-- ══ Nav ══ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="nav-brand" href="." aria-label="GitHub User Lookup home" onclick="resetToLanding(); return false;">
+        <div class="nav-logo" aria-hidden="true">
+          <i class="fi fi-brands-github"></i>
         </div>
-    </nav>
-
-    <div class="max-w-7xl mx-auto px-4 lg:px-8 mt-8">
-        
-        <!-- Error Feedback Area -->
-        <div id="errorContainer" class="hidden mb-8 space-y-4 animate-slide-up">
-            <!-- Dynamically populated by app.js -->
+        <div class="nav-brand-text">
+          <span class="nav-title">User Lookup</span>
+          <span class="nav-sub"><span class="status-dot" aria-hidden="true"></span>GitHub API</span>
         </div>
+      </a>
 
-        <!-- Professional Skeleton State -->
-        <div id="loadingUI" class="hidden space-y-8 animate-pulse">
-            <div class="glass-card rounded-[2.5rem] p-10 flex flex-col md:flex-row gap-10">
-                <div class="w-44 h-44 rounded-3xl skeleton"></div>
-                <div class="flex-1 space-y-6">
-                    <div class="h-12 w-64 skeleton rounded-2xl"></div>
-                    <div class="h-6 w-full skeleton rounded-xl"></div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="h-20 skeleton rounded-2xl"></div>
-                        <div class="h-20 skeleton rounded-2xl"></div>
-                        <div class="h-20 skeleton rounded-2xl"></div>
-                        <div class="h-20 skeleton rounded-2xl"></div>
-                    </div>
-                </div>
-            </div>
+      <div class="search-wrap" role="search">
+        <div class="search-box" id="searchBox">
+          <i class="fi fi-rr-search search-icon" aria-hidden="true"></i>
+          <input
+            type="text"
+            id="usernameInput"
+            class="search-input"
+            placeholder="Search a GitHub username…"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="none"
+            spellcheck="false"
+            aria-label="GitHub username"
+          >
+          <kbd class="search-kbd" aria-label="Keyboard shortcut: Ctrl+K or Cmd+K" title="Ctrl K">⌘K</kbd>
         </div>
+        <button class="search-btn" id="searchBtn" aria-label="Search">
+          <i class="fi fi-rr-arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
 
-        <!-- Main Dynamic Dashboard -->
-        <main id="profileContent" class="hidden space-y-12 pb-24">
-            
-            <!-- Hero Identity Profile -->
-            <section class="hero-card">
-                <div class="flex flex-col lg:flex-row gap-12 items-center lg:items-start relative z-10">
-                    <div class="avatar-wrapper group">
-                        <img id="avatar" src="" alt="User Avatar" class="avatar-img">
-                        <div class="avatar-badge">
-                            <i class="fi fi-brands-github"></i>
-                        </div>
-                    </div>
+  <!-- ══ Page shell ══ -->
+  <div class="page-shell">
 
-                    <div class="flex-1 text-center lg:text-left">
-                        <div class="flex flex-col lg:flex-row lg:items-center gap-5 mb-4">
-                            <h2 id="fullName" class="text-5xl font-extrabold text-white tracking-tighter"></h2>
-                            <div id="achievementsList" class="flex flex-wrap justify-center lg:justify-start gap-2"></div>
-                        </div>
-                        
-                        <div class="flex items-center justify-center lg:justify-start gap-4 mb-8">
-                            <span class="handle-tag">
-                                <i class="fi fi-rr-at"></i><span id="loginId"></span>
-                            </span>
-                            <span id="hireableStatus" class="hidden px-3 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-black rounded-full border border-emerald-500/20">HIREABLE</span>
-                        </div>
-                        
-                        <p id="bioText" class="text-gray-400 text-xl mb-10 max-w-4xl leading-relaxed font-medium"></p>
-                        
-                        <!-- Analytical Stats Grid -->
-                        <div class="grid grid-cols-2 xl:grid-cols-4 gap-5 mb-12">
-                            <div class="stat-card">
-                                <span class="stat-label">Network Followers</span>
-                                <span id="statFollowers" class="stat-value">0</span>
-                            </div>
-                            <div class="stat-card">
-                                <span class="stat-label">Network Following</span>
-                                <span id="statFollowing" class="stat-value">0</span>
-                            </div>
-                            <div class="stat-card">
-                                <span class="stat-label">Public Repos</span>
-                                <span id="statRepos" class="stat-value">0</span>
-                            </div>
-                            <div class="stat-card">
-                                <span class="stat-label">Code Gists</span>
-                                <span id="statGists" class="stat-value">0</span>
-                            </div>
-                        </div>
-
-                        <!-- Professional Metadata -->
-                        <div class="meta-footer">
-                            <div class="meta-item"><i class="fi fi-rr-calendar text-blue-500"></i> <span id="valJoined"></span></div>
-                            <div id="locBox" class="meta-item"><i class="fi fi-rr-marker text-rose-500"></i> <span id="valLocation"></span></div>
-                            <div id="linkBox" class="meta-item"><i class="fi fi-rr-link text-emerald-500"></i> <a id="valBlog" target="_blank"></a></div>
-                            <div id="compBox" class="meta-item"><i class="fi fi-rr-briefcase text-amber-500"></i> <span id="valCompany"></span></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Navigation Tabs -->
-            <div class="tabs-nav-container">
-                <div class="flex gap-12 overflow-x-auto no-scrollbar">
-                    <a href="#repos" id="tab-repos" class="tab-link active">
-                        <i class="fi fi-rr-layers"></i> Repositories
-                    </a>
-                    <a href="#stars" id="tab-stars" class="tab-link">
-                        <i class="fi fi-rr-star"></i> Curated Stars
-                    </a>
-                </div>
-            </div>
-
-            <!-- Content Grids -->
-            <div id="reposView" class="view-grid active"></div>
-            
-            <div id="starsView" class="view-grid">
-                <div id="starsLoading" class="col-span-full py-24 flex flex-col items-center gap-6">
-                    <div class="loader-spinner"></div>
-                    <p class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]">Synchronizing Star Database</p>
-                </div>
-                <div id="starsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full"></div>
-            </div>
-        </main>
+    <!-- Landing state -->
+    <div id="landingUI" class="landing">
+      <div class="landing-inner">
+        <div class="landing-icon" aria-hidden="true">
+          <i class="fi fi-brands-github"></i>
+        </div>
+        <h2 class="landing-title">Explore GitHub Profiles</h2>
+        <p class="landing-sub">Type any GitHub username in the search bar to view their repositories, stars, followers, and more.</p>
+        <div class="landing-examples" aria-label="Example searches">
+          <span class="landing-label">Try:</span>
+          <button class="example-chip" data-user="torvalds">torvalds</button>
+          <button class="example-chip" data-user="sindresorhus">sindresorhus</button>
+          <button class="example-chip" data-user="MrLiPx">MrLiPx</button>
+        </div>
+      </div>
     </div>
 
-    <!-- Background Elements -->
-    <div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-20">
-        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-600 rounded-full blur-[150px]"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-900 rounded-full blur-[150px]"></div>
+    <!-- Loading skeleton -->
+    <div id="loadingUI" class="hidden" aria-live="polite" aria-busy="true">
+      <div class="skeleton-hero">
+        <div class="skel skel-avatar"></div>
+        <div class="skel-body">
+          <div class="skel skel-name"></div>
+          <div class="skel skel-bio"></div>
+          <div class="skel-stats">
+            <div class="skel skel-stat"></div>
+            <div class="skel skel-stat"></div>
+            <div class="skel skel-stat"></div>
+            <div class="skel skel-stat"></div>
+          </div>
+        </div>
+      </div>
+      <div class="skel-grid">
+        <div class="skel skel-card"></div>
+        <div class="skel skel-card"></div>
+        <div class="skel skel-card"></div>
+        <div class="skel skel-card"></div>
+        <div class="skel skel-card"></div>
+        <div class="skel skel-card"></div>
+      </div>
     </div>
+
+    <!-- Error state -->
+    <div id="errorContainer" class="hidden error-wrap" role="alert" aria-live="assertive">
+      <!-- filled by JS -->
+    </div>
+
+    <!-- Profile content -->
+    <main id="profileContent" class="hidden profile-root" aria-live="polite">
+
+      <!-- Hero -->
+      <section class="hero-card" aria-label="Profile overview">
+        <div class="hero-inner">
+
+          <div class="avatar-col">
+            <div class="avatar-ring" aria-hidden="true"></div>
+            <img id="avatar" class="avatar-img" src="" alt="GitHub avatar" width="160" height="160" loading="lazy">
+            <span id="hireableStatus" class="hire-badge hidden" aria-label="Open to work">HIREABLE</span>
+          </div>
+
+          <div class="hero-body">
+            <div class="hero-top">
+              <div>
+                <h2 id="fullName" class="hero-name"></h2>
+                <a id="loginLink" class="hero-handle" href="" target="_blank" rel="noopener noreferrer">
+                  <i class="fi fi-rr-at" aria-hidden="true"></i><span id="loginId"></span>
+                </a>
+              </div>
+              <div id="achievementsList" class="badges-row" role="list" aria-label="Achievements"></div>
+            </div>
+
+            <p id="bioText" class="hero-bio"></p>
+
+            <div class="stats-row" role="list" aria-label="Stats">
+              <div class="stat-pill" role="listitem">
+                <span class="stat-num" id="statFollowers">—</span>
+                <span class="stat-lbl">Followers</span>
+              </div>
+              <div class="stat-pill" role="listitem">
+                <span class="stat-num" id="statFollowing">—</span>
+                <span class="stat-lbl">Following</span>
+              </div>
+              <div class="stat-pill" role="listitem">
+                <span class="stat-num" id="statRepos">—</span>
+                <span class="stat-lbl">Repos</span>
+              </div>
+              <div class="stat-pill" role="listitem">
+                <span class="stat-num" id="statGists">—</span>
+                <span class="stat-lbl">Gists</span>
+              </div>
+            </div>
+
+            <div class="meta-row">
+              <div class="meta-item"><i class="fi fi-rr-calendar" aria-hidden="true"></i><span id="valJoined"></span></div>
+              <div id="locBox"  class="meta-item hidden"><i class="fi fi-rr-marker"    aria-hidden="true"></i><span id="valLocation"></span></div>
+              <div id="compBox" class="meta-item hidden"><i class="fi fi-rr-briefcase"  aria-hidden="true"></i><span id="valCompany"></span></div>
+              <div id="linkBox" class="meta-item hidden"><i class="fi fi-rr-link"       aria-hidden="true"></i><a id="valBlog" target="_blank" rel="noopener noreferrer"></a></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tabs -->
+      <div class="tabs-bar" role="tablist" aria-label="Profile sections">
+        <a href="#repos" id="tab-repos" class="tab active" role="tab" aria-selected="true"  aria-controls="reposView">
+          <i class="fi fi-rr-layers"    aria-hidden="true"></i>Repositories
+        </a>
+        <a href="#stars" id="tab-stars" class="tab"        role="tab" aria-selected="false" aria-controls="starsView">
+          <i class="fi fi-rr-star"      aria-hidden="true"></i>Starred
+        </a>
+      </div>
+
+      <!-- Repos -->
+      <div id="reposView" class="view-panel" role="tabpanel" aria-labelledby="tab-repos"></div>
+
+      <!-- Stars -->
+      <div id="starsView" class="view-panel hidden" role="tabpanel" aria-labelledby="tab-stars">
+        <div id="starsLoading" class="panel-loading">
+          <div class="spinner" aria-hidden="true"></div>
+          <p class="panel-loading-text">Loading starred repos…</p>
+        </div>
+        <div id="starsGrid" class="repo-grid"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="assets/app.js" defer></script>
 </body>
 </html>
