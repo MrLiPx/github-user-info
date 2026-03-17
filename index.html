@@ -74,7 +74,6 @@
         
         <!-- Error Alerts Container -->
         <div id="errorContainer" class="hidden mb-6 space-y-3">
-            <!-- Rate Limit Error -->
             <div id="rateLimitAlert" class="hidden p-4 bg-orange-900/20 border border-orange-500/50 rounded-xl flex flex-col gap-2 text-orange-400">
                 <div class="flex items-center gap-3">
                     <i class="fi fi-rr-hourglass-end"></i>
@@ -84,13 +83,11 @@
                 <button onclick="handleSearch()" class="ml-8 mt-2 w-fit px-3 py-1 bg-orange-500/20 hover:bg-orange-500/40 rounded-lg text-[10px] font-bold uppercase transition-all">Try Again</button>
             </div>
 
-            <!-- Not Found Error -->
             <div id="notFoundAlert" class="hidden p-4 bg-red-900/20 border border-red-500/50 rounded-xl flex items-center gap-3 text-red-400">
                 <i class="fi fi-rr-exclamation"></i>
                 <span>User not found. Check the username and try again.</span>
             </div>
 
-            <!-- Generic Network Error -->
             <div id="genericErrorAlert" class="hidden p-4 bg-gray-800 border border-gray-600 rounded-xl flex items-center gap-3 text-gray-300">
                 <i class="fi fi-rr-wifi-slash"></i>
                 <span>Network error. Please check your connection.</span>
@@ -163,7 +160,13 @@
             </div>
 
             <div id="reposView" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-            <div id="starsView" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <div id="starsView" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="starsLoading" class="col-span-full py-10 flex flex-col items-center gap-4 text-gray-500">
+                    <div class="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    <p class="text-sm">Fetching starred items...</p>
+                </div>
+                <div id="starsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-full"></div>
+            </div>
         </main>
     </div>
 
@@ -175,6 +178,9 @@
         const notFoundAlert = document.getElementById('notFoundAlert');
         const genericErrorAlert = document.getElementById('genericErrorAlert');
 
+        let currentUsername = "";
+        let cachedStars = new Map();
+
         const headers = {
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2026-03-10"
@@ -185,24 +191,26 @@
             const username = params.get('usn') || params.get('username') || params.get('info');
             
             if (username) {
-                // Remove parameter immediately
-                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                window.history.replaceState({ path: newUrl }, '', newUrl);
-                
                 document.getElementById('usernameInput').value = username;
+                // Add #repos to hash if no hash exists
+                if (!window.location.hash) {
+                    window.location.hash = 'repos';
+                }
                 fetchProfile(username);
             }
-
-            // Initial tab check
             handleHashChange();
         };
 
-        // Listen for hash changes
         window.addEventListener('hashchange', handleHashChange);
 
         function handleHashChange() {
             const hash = window.location.hash || '#repos';
-            switchTab(hash.substring(1));
+            const tab = hash.substring(1);
+            switchTab(tab);
+            
+            if (tab === 'stars' && currentUsername && !cachedStars.has(currentUsername)) {
+                fetchStars(currentUsername);
+            }
         }
 
         function hideAllErrors() {
@@ -214,40 +222,49 @@
 
         function handleSearch() {
             const username = document.getElementById('usernameInput').value.trim();
-            if (username) fetchProfile(username);
+            if (username) {
+                // Update URL to include ?usn=... and #repos
+                const newUrl = new URL(window.location.href);
+                newUrl.searchParams.set('usn', username);
+                newUrl.hash = 'repos';
+                window.history.pushState({}, '', newUrl);
+                
+                fetchProfile(username);
+            }
         }
 
         async function fetchProfile(username) {
+            const cacheKey = `gh_user_${username.toLowerCase()}`;
+            const cachedData = sessionStorage.getItem(cacheKey);
+            
+            if (cachedData) {
+                const data = JSON.parse(cachedData);
+                currentUsername = data.user.login;
+                renderDashboard(data.user, data.repos);
+                return;
+            }
+
             hideAllErrors();
             loadingUI.classList.remove('hidden');
             content.classList.add('hidden');
+            cachedStars.clear();
 
             try {
                 const uRes = await fetch(`https://api.github.com/users/${username}`, { headers });
                 
                 if (!uRes.ok) {
-                    errorContainer.classList.remove('hidden');
-                    if (uRes.status === 404) {
-                        notFoundAlert.classList.remove('hidden');
-                    } else if (uRes.status === 403) {
-                        rateLimitAlert.classList.remove('hidden');
-                    } else {
-                        genericErrorAlert.classList.remove('hidden');
-                    }
-                    loadingUI.classList.add('hidden');
+                    handleErrorResponse(uRes.status);
                     return;
                 }
 
-                const [rRes, sRes] = await Promise.all([
-                    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`, { headers }),
-                    fetch(`https://api.github.com/users/${username}/starred?per_page=100`, { headers })
-                ]);
-
                 const user = await uRes.json();
+                const rRes = await fetch(`https://api.github.com/users/${user.login}/repos?sort=updated&per_page=30`, { headers });
                 const repos = rRes.ok ? await rRes.json() : [];
-                const stars = sRes.ok ? await sRes.json() : [];
 
-                renderDashboard(user, repos, stars);
+                sessionStorage.setItem(cacheKey, JSON.stringify({ user, repos }));
+                
+                currentUsername = user.login;
+                renderDashboard(user, repos);
             } catch (err) {
                 errorContainer.classList.remove('hidden');
                 genericErrorAlert.classList.remove('hidden');
@@ -256,7 +273,36 @@
             }
         }
 
-        function renderDashboard(user, repos, stars) {
+        async function fetchStars(username) {
+            const grid = document.getElementById('starsGrid');
+            const loader = document.getElementById('starsLoading');
+            
+            grid.innerHTML = '';
+            loader.classList.remove('hidden');
+
+            try {
+                const res = await fetch(`https://api.github.com/users/${username}/starred?per_page=30`, { headers });
+                if (res.ok) {
+                    const stars = await res.json();
+                    cachedStars.set(username, stars);
+                    renderCards('starsGrid', stars);
+                }
+            } catch (e) {
+                grid.innerHTML = `<p class="col-span-full text-center text-red-400">Error loading stars</p>`;
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        function handleErrorResponse(status) {
+            errorContainer.classList.remove('hidden');
+            if (status === 404) notFoundAlert.classList.remove('hidden');
+            else if (status === 403) rateLimitAlert.classList.remove('hidden');
+            else genericErrorAlert.classList.remove('hidden');
+            loadingUI.classList.add('hidden');
+        }
+
+        function renderDashboard(user, repos) {
             document.getElementById('avatar').src = user.avatar_url;
             document.getElementById('fullName').textContent = user.name || user.login;
             document.getElementById('loginId').textContent = user.login;
@@ -282,11 +328,13 @@
             updateMeta('valCompany', user.company, 'compBox');
 
             renderCards('reposView', repos);
-            renderCards('starsView', stars);
             content.classList.remove('hidden');
             
-            // Ensure correct tab visibility after render
-            handleHashChange();
+            if (window.location.hash === '#stars' && !cachedStars.has(user.login)) {
+                fetchStars(user.login);
+            } else if (cachedStars.has(user.login)) {
+                renderCards('starsGrid', cachedStars.get(user.login));
+            }
         }
 
         function createBadge(text, icon) {
@@ -317,7 +365,7 @@
         }
 
         function switchTab(tab) {
-            const isRepos = tab === 'repos';
+            const isRepos = tab === 'repos' || !tab;
             const isStars = tab === 'stars';
 
             document.getElementById('reposView').classList.toggle('hidden', !isRepos);
