@@ -652,6 +652,50 @@ function buildPager(current, total, itemCount, tab) {
     wrap.appendChild(info);
   }
 
+  // Jump-to-page — only show when there are more than 2 pages
+  if (total > 2) {
+    const jump = document.createElement('div');
+    jump.className = 'pager-jump';
+
+    const label = Object.assign(document.createElement('span'), {
+      className: 'pager-jump-label',
+      textContent: 'Go to page',
+    });
+
+    const input = document.createElement('input');
+    input.type        = 'number';
+    input.className   = 'pager-jump-input';
+    input.min         = '1';
+    input.max         = String(total);
+    input.placeholder = String(current);
+    input.setAttribute('aria-label', `Go to page (1–${total})`);
+
+    const goBtn = Object.assign(document.createElement('button'), {
+      className: 'pager-jump-go',
+      textContent: 'Go',
+    });
+    goBtn.setAttribute('aria-label', 'Jump to page');
+
+    const doJump = () => {
+      const val = parseInt(input.value, 10);
+      if (!val || val < 1 || val > total) {
+        input.classList.add('is-invalid');
+        input.focus();
+        setTimeout(() => input.classList.remove('is-invalid'), 600);
+        return;
+      }
+      if (val === current) { input.value = ''; return; }
+      input.value = '';
+      goPage(tab, val);
+    };
+
+    goBtn.addEventListener('click', doJump);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') doJump(); });
+
+    jump.append(label, input, goBtn);
+    wrap.appendChild(jump);
+  }
+
   return wrap;
 }
 
