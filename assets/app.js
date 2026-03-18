@@ -12,7 +12,7 @@ const API           = 'https://api.github.com';
 const HDRS          = { Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
 const TIMEOUT_MS    = 9_000;
 const CACHE_MS      = 5 * 60 * 1000;
-const PER_PAGE      = 10;
+const PER_PAGE      = 22;
 const PREVIEW_DELAY = 280;
 
 const LANG_COLORS = {
@@ -87,12 +87,12 @@ function pageFromUrl(url) {
 
 // ─── URL helpers ──────────────────────────────────────────────────────────────
 /*
- * URL scheme:  ?u=<username>#<tab>/<page>
+ * URL scheme:  ?q=<username>#<tab>/<page>
  *
- *   ?u=torvalds            →  repos tab, page 1
- *   ?u=torvalds#stars      →  stars tab, page 1
- *   ?u=torvalds#repos/3    →  repos tab, page 3
- *   ?u=torvalds#stars/2    →  stars tab, page 2
+ *   ?q=torvalds            →  repos tab, page 1
+ *   ?q=torvalds#stars      →  stars tab, page 1
+ *   ?q=torvalds#repos/3    →  repos tab, page 3
+ *   ?q=torvalds#stars/2    →  stars tab, page 2
  *
  * The hash carries both the active tab and the page number so the
  * query string stays short and readable.  Page 1 is omitted.
@@ -113,16 +113,16 @@ function buildHash(tab, page) {
 
 function getUsername() {
   const p = new URLSearchParams(location.search);
-  return p.get('u') || p.get('usn') || p.get('username') || '';
+  return p.get('q') || p.get('u') || p.get('usn') || p.get('username') || '';
 }
 
 function pushState(username, tab, page) {
-  const q = username ? `?u=${encodeURIComponent(username)}` : '';
+  const q = username ? `?q=${encodeURIComponent(username)}` : '';
   history.pushState({}, '', `${location.pathname}${q}${buildHash(tab, page)}`);
 }
 
 function replaceState(username, tab, page) {
-  const q = username ? `?u=${encodeURIComponent(username)}` : '';
+  const q = username ? `?q=${encodeURIComponent(username)}` : '';
   history.replaceState({}, '', `${location.pathname}${q}${buildHash(tab, page)}`);
 }
 
