@@ -1,43 +1,63 @@
 /*
  * github-user-search — design tokens
- * Build: IDewhVtoy4
+ * Build: IYwNhpt6h0
+ * Copyright (c) MrLiPx. All rights reserved.
  */
 
 :root {
   /* ── Palette ── */
-  --bg:        #07090f;
-  --surface:   #0d1117;
-  --surface2:  #111820;
-  --surface3:  #161f29;
-  --border:    #1a2130;
-  --border2:   #1f2937;
-  --accent:    #4d9ef7;
-  --accent-hi: #74b5ff;
-  --accent-lo: rgba(77,158,247,.12);
-  --green:     #3fb950;
-  --amber:     #e3b341;
-  --rose:      #f85149;
-  --purple:    #bc8cff;
-  --text:      #e6edf3;
-  --sub:       #8b949e;
-  --muted:     #4a5568;
+  --bg:          #060a10;
+  --surface:     #0c1118;
+  --surface2:    #101821;
+  --surface3:    #141f2c;
+  --border:      #192030;
+  --border2:     #1e2b3c;
+  --accent:      #4b9cf5;
+  --accent-hi:   #70b4ff;
+  --accent-lo:   rgba(75,156,245,.1);
+  --accent-glow: rgba(75,156,245,.18);
+  --green:       #3fb950;
+  --amber:       #e3b341;
+  --rose:        #f85149;
+  --purple:      #c084fc;
+  --teal:        #2dd4bf;
+  --text:        #e6edf3;
+  --sub:         #8b949e;
+  --muted:       #46546a;
+  --dim:         #2a3a50;
+
+  /* ── Fonts ── */
+  --font-sans:  'Instrument Sans', system-ui, sans-serif;
+  --font-display: 'Syne', sans-serif;
+  --font-mono:  'JetBrains Mono', monospace;
 
   /* ── Radii ── */
-  --r-xs:  6px;
-  --r-sm:  10px;
-  --r:     14px;
-  --r-lg:  20px;
-  --r-xl:  28px;
+  --r-xs: 5px;
+  --r-sm: 9px;
+  --r:    13px;
+  --r-lg: 18px;
+  --r-xl: 24px;
 
-  /* ── Spacing ── */
-  --gap-xs:  6px;
-  --gap-sm:  12px;
-  --gap-md:  20px;
-  --gap-lg:  32px;
-  --gap-xl:  48px;
+  /* ── Spacing scale ── */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  20px;
+  --s-6:  24px;
+  --s-7:  28px;
+  --s-8:  32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
 
   /* ── Layout ── */
-  --nav-h:    60px;
-  --max-w:    1080px;
-  --pad-x:    28px;
+  --nav-h:  58px;
+  --max-w:  1060px;
+  --pad-x:  28px;
+
+  /* ── Shadows ── */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.35), 0 1px 2px rgba(0,0,0,.25);
+  --shadow-md:  0 4px 12px rgba(0,0,0,.4),  0 2px 4px rgba(0,0,0,.3);
+  --shadow-lg:  0 10px 32px rgba(0,0,0,.5), 0 4px 8px rgba(0,0,0,.35);
 }

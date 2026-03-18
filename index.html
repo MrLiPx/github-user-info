@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- ── SEO ── -->
+  <!-- ── Primary SEO ── -->
   <title>GitHub User Search — Developer Profile Explorer</title>
-  <meta name="description" content="Search any GitHub user and instantly explore their repositories, stars, followers, and developer stats.">
-  <meta name="keywords" content="GitHub, user, search, developer, profile, repositories, stats">
+  <meta name="description" content="Search any GitHub user and instantly explore their repositories, stars, followers, and developer stats in a clean, fast interface.">
+  <meta name="keywords" content="GitHub, user, search, developer, profile, repositories, stats, open source">
   <meta name="author" content="MrLiPx">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <link rel="canonical" href="https://mrlipx.github.io/github-user-search/">
@@ -17,12 +17,12 @@
   <meta property="og:site_name"    content="GitHub User Search">
   <meta property="og:locale"       content="en_US">
   <meta property="og:title"        content="GitHub User Search — Developer Profile Explorer">
-  <meta property="og:description"  content="Search any GitHub user and explore their repositories, stars, and developer stats.">
+  <meta property="og:description"  content="Search any GitHub user and instantly explore their repositories, stars, followers, and developer stats.">
   <meta property="og:url"          content="https://mrlipx.github.io/github-user-search/">
-  <meta property="og:image"        content="https://mrlipx.github.io/github-user-search/assets/logo.png">
+  <meta property="og:image"        content="https://avatars.githubusercontent.com/u/163276171?v=4&size=128">
   <meta property="og:image:width"  content="128">
   <meta property="og:image:height" content="128">
-  <meta property="og:image:alt"    content="GitHub User Search logo">
+  <meta property="og:image:alt"    content="MrLiPx avatar">
   <meta property="og:image:type"   content="image/png">
 
   <!-- ── Twitter / X ── -->
@@ -30,12 +30,12 @@
   <meta name="twitter:site"        content="@MrLiPx">
   <meta name="twitter:creator"     content="@MrLiPx">
   <meta name="twitter:title"       content="GitHub User Search — Developer Profile Explorer">
-  <meta name="twitter:description" content="Search any GitHub user and explore their repositories, stars, and developer stats.">
-  <meta name="twitter:image"       content="https://mrlipx.github.io/github-user-search/assets/logo.png">
-  <meta name="twitter:image:alt"   content="GitHub User Search logo">
+  <meta name="twitter:description" content="Search any GitHub user and instantly explore their repositories, stars, followers, and developer stats.">
+  <meta name="twitter:image"       content="https://avatars.githubusercontent.com/u/163276171?v=4&size=128">
+  <meta name="twitter:image:alt"   content="MrLiPx avatar">
 
   <!-- ── Theme ── -->
-  <meta name="theme-color" content="#4d9ef7">
+  <meta name="theme-color" content="#4b9cf5">
   <meta name="color-scheme" content="dark">
   <meta name="application-name" content="GitHub User Search">
 
@@ -53,27 +53,29 @@
   }
   </script>
 
-  <!-- ── Favicon ── -->
-  <link rel="icon"             type="image/png" href="assets/logo.png">
-  <link rel="shortcut icon"                     href="assets/logo.png">
-  <link rel="apple-touch-icon"                  href="assets/logo.png">
+  <!-- ── Favicons — routed through GitHub avatar ── -->
+  <link rel="icon"             type="image/png" href="https://avatars.githubusercontent.com/u/163276171?v=4&size=64">
+  <link rel="shortcut icon"                     href="https://avatars.githubusercontent.com/u/163276171?v=4&size=64">
+  <link rel="apple-touch-icon"                  href="https://avatars.githubusercontent.com/u/163276171?v=4&size=128">
+  <link rel="apple-touch-icon" sizes="180x180"  href="https://avatars.githubusercontent.com/u/163276171?v=4&size=128">
 
-  <!-- ── Fonts ── -->
+  <!-- ── Fonts — Instrument Sans + Syne + JetBrains Mono ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- ── Icons ── -->
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-brands/css/uicons-brands.css">
 
-  <!-- ── Styles (build: IDewhVtoy4) ── -->
-  <link rel="stylesheet" href="assets/vars.css?v=IDewhVtoy4">
-  <link rel="stylesheet" href="assets/base.css?v=IDewhVtoy4">
-  <link rel="stylesheet" href="assets/style.css?v=IDewhVtoy4">
+  <!-- ── Styles (build: IYwNhpt6h0) ── -->
+  <link rel="stylesheet" href="assets/vars.css?v=IYwNhpt6h0">
+  <link rel="stylesheet" href="assets/base.css?v=IYwNhpt6h0">
+  <link rel="stylesheet" href="assets/style.css?v=IYwNhpt6h0">
 </head>
 <body>
 
+  <!-- Background -->
   <div class="bg-layer" aria-hidden="true">
     <div class="bg-grid"></div>
     <div class="bg-orb bg-orb-1"></div>
@@ -90,14 +92,12 @@
         </div>
         <div class="nav-brand-text">
           <span class="nav-title">User Search</span>
-          <span class="nav-meta">
-            <span class="status-dot" aria-hidden="true"></span>GitHub API
-          </span>
+          <span class="nav-meta"><span class="status-dot" aria-hidden="true"></span>GitHub API</span>
         </div>
       </button>
 
       <div class="search-wrap" role="search" aria-label="Search GitHub users">
-        <div class="search-field">
+        <div class="search-field" id="searchField">
           <i class="fi fi-rr-search search-icon" aria-hidden="true"></i>
           <input
             type="search"
@@ -110,7 +110,9 @@
             spellcheck="false"
             aria-label="GitHub username"
             enterkeyhint="search"
+            maxlength="39"
           >
+          <div class="search-scan" aria-hidden="true"></div>
           <kbd class="search-kbd" aria-hidden="true">⌘K</kbd>
         </div>
         <button class="search-btn" id="searchBtn" aria-label="Search">
@@ -124,14 +126,14 @@
   <!-- ══ Page shell ══ -->
   <div class="page-shell">
 
-    <!-- Landing -->
+    <!-- ── Landing ── -->
     <div id="landingUI" class="landing">
       <div class="landing-inner">
         <div class="landing-icon" aria-hidden="true">
           <i class="fi fi-brands-github"></i>
         </div>
-        <h1 class="landing-title">Search GitHub Profiles</h1>
-        <p class="landing-sub">Enter any GitHub username to view their profile, repositories, starred projects, and contributor stats.</p>
+        <h1 id="landingTitle" class="landing-title" data-text="Search GitHub Profiles">Search GitHub Profiles</h1>
+        <p class="landing-sub">Enter any GitHub username to explore their profile, repositories, starred projects, and contributor stats.</p>
         <div class="example-row" aria-label="Example searches">
           <span class="example-label">Try:</span>
           <button class="example-chip" data-user="torvalds">torvalds</button>
@@ -141,7 +143,34 @@
       </div>
     </div>
 
-    <!-- Loading skeleton -->
+    <!-- ── Typing preview skeleton (shown while debouncing, no API call) ── -->
+    <div id="typingPreview" class="hidden typing-preview" aria-live="polite" aria-label="Preparing search…">
+      <div class="tp-hero">
+        <div class="tp-avatar" aria-hidden="true"></div>
+        <div class="tp-body">
+          <div class="tp-tag" aria-hidden="true">// awaiting search…</div>
+          <div class="tp-name skel-pulse"></div>
+          <div class="tp-bio  skel-pulse"></div>
+          <div class="tp-bio2 skel-pulse"></div>
+          <div class="tp-stats">
+            <div class="tp-stat skel-pulse"></div>
+            <div class="tp-stat skel-pulse"></div>
+            <div class="tp-stat skel-pulse"></div>
+            <div class="tp-stat skel-pulse"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tp-grid">
+        <div class="tp-card skel-pulse"></div>
+        <div class="tp-card skel-pulse"></div>
+        <div class="tp-card skel-pulse"></div>
+        <div class="tp-card skel-pulse"></div>
+        <div class="tp-card skel-pulse"></div>
+        <div class="tp-card skel-pulse"></div>
+      </div>
+    </div>
+
+    <!-- ── Loading skeleton (shown after Enter, during API call) ── -->
     <div id="loadingUI" class="hidden" aria-live="polite" aria-busy="true" aria-label="Loading profile">
       <div class="sk-hero">
         <div class="skel sk-avatar"></div>
@@ -167,12 +196,10 @@
       </div>
     </div>
 
-    <!-- Error -->
-    <div id="errorContainer" class="hidden error-wrap" role="alert" aria-live="assertive">
-      <!-- JS populated -->
-    </div>
+    <!-- ── Error ── -->
+    <div id="errorContainer" class="hidden error-wrap" role="alert" aria-live="assertive"></div>
 
-    <!-- Profile -->
+    <!-- ── Profile content ── -->
     <main id="profileContent" class="hidden profile-root" aria-live="polite">
 
       <!-- Hero -->
@@ -182,7 +209,7 @@
           <div class="avatar-col">
             <div class="avatar-frame">
               <div class="avatar-ring" aria-hidden="true"></div>
-              <img id="avatar" class="avatar-img" src="" alt="GitHub avatar" width="104" height="104" loading="lazy" decoding="async">
+              <img id="avatar" class="avatar-img" src="" alt="GitHub avatar" width="96" height="96" loading="lazy" decoding="async">
             </div>
             <span id="hireableStatus" class="hire-badge hidden" aria-label="Open to work">HIREABLE</span>
           </div>
@@ -201,7 +228,7 @@
 
             <p id="bioText" class="hero-bio"></p>
 
-            <div class="stats-grid" role="list" aria-label="Stats">
+            <div class="stats-grid" role="list" aria-label="Profile stats">
               <div class="stat-cell" role="listitem">
                 <div class="stat-icon stat-icon-blue" aria-hidden="true">
                   <i class="fi fi-rr-users"></i>
@@ -257,29 +284,31 @@
 
       <!-- Tabs -->
       <div class="tabs-bar" role="tablist" aria-label="Profile sections">
-        <a href="#repos" id="tab-repos" class="tab active" role="tab" aria-selected="true" aria-controls="reposView">
+        <a href="#repos" id="tab-repos" class="tab active" role="tab" aria-selected="true"  aria-controls="reposView">
           <i class="fi fi-rr-layers" aria-hidden="true"></i>Repositories
         </a>
-        <a href="#stars" id="tab-stars" class="tab" role="tab" aria-selected="false" aria-controls="starsView">
-          <i class="fi fi-rr-star" aria-hidden="true"></i>Starred
+        <a href="#stars" id="tab-stars" class="tab"        role="tab" aria-selected="false" aria-controls="starsView">
+          <i class="fi fi-rr-star"   aria-hidden="true"></i>Starred
         </a>
       </div>
 
       <!-- Repos panel -->
       <div id="reposView" class="view-panel" role="tabpanel" aria-labelledby="tab-repos"></div>
 
-      <!-- Stars panel -->
+      <!-- Stars panel
+           NOTE: NO class="repo-grid" here — renderCards() creates that wrapper.
+           Adding it here caused a nested grid bug (cards displayed in 1 column). -->
       <div id="starsView" class="view-panel hidden" role="tabpanel" aria-labelledby="tab-stars">
         <div id="starsLoading" class="panel-loading">
           <div class="spinner" aria-hidden="true"></div>
           <p class="panel-loading-text">Fetching starred repos…</p>
         </div>
-        <div id="starsGrid" class="repo-grid"></div>
+        <div id="starsGrid"></div>
       </div>
 
     </main>
   </div>
 
-  <script src="assets/app.js?v=IDewhVtoy4" defer></script>
+  <script src="assets/app.js?v=IYwNhpt6h0" defer></script>
 </body>
 </html>
