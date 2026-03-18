@@ -1,4 +1,4 @@
-# **GitHub Profile Finder**
+# **GitHub User Searcher**
 
 A lightweight, responsive web application that uses the GitHub REST API to fetch and display user profile information and repository statistics in a clean, modern interface.
 
