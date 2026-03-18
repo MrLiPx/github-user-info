@@ -1,5 +1,5 @@
 /**
- * GitHub User Lookup — app.js
+ * GitHub User Search — app.js
  */
 
 'use strict';
@@ -163,7 +163,7 @@ function resetToLanding() {
   UI.input().value = '';
   currentUser  = '';
   starsLoaded  = false;
-  document.title = 'GitHub User Lookup — Developer Profile Explorer';
+  document.title = 'GitHub User Search — Developer Profile Explorer';
   setState('landing');
 }
 
@@ -183,7 +183,7 @@ async function loadProfile(username) {
     handleHashChange();
 
     // Update title and OG dynamically
-    document.title = `${user.name || user.login} (@${user.login}) — GitHub User Lookup`;
+    document.title = `${user.name || user.login} (@${user.login}) — GitHub User Search`;
   } catch (err) {
     showError(err);
   }
